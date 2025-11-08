@@ -29,6 +29,10 @@ public abstract class Application implements IApplication {
     private boolean closed = false;
     private boolean hoveredClose = false;
 
+    private boolean isDragging = false;
+    private float dragOffsetX = 0;
+    private float dragOffsetY = 0;
+
     public Application(int x, int y, int width, int height, String applicationName, OrthographicCamera camera) {
         this.x = x;
         this.y = y;
@@ -56,6 +60,7 @@ public abstract class Application implements IApplication {
         shapeRenderer.end();
 
         handleCloseButtonClick();
+        handleDragging();
 
         batch.setProjectionMatrix(camera.combined);
 
@@ -103,6 +108,36 @@ public abstract class Application implements IApplication {
         if (Gdx.input.justTouched() && hoveredClose) {
             closed = true;
             shapeRenderer.dispose();
+        }
+    }
+
+    private void handleDragging() {
+        Vector3 mouse = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+        camera.unproject(mouse);
+        float mx = mouse.x;
+        float my = mouse.y;
+
+        float titleBarX = x;
+        float titleBarY = y + height;
+        float closeX = x + width - closeSize - 4;
+
+        boolean isCursorOnTitleBar = mx >= titleBarX && mx <= titleBarX + width &&
+                                      my >= titleBarY && my <= titleBarY + titleBarHeight &&
+                                      !(mx >= closeX && hoveredClose);
+
+        if (Gdx.input.isTouched()) {
+            if (!isDragging && isCursorOnTitleBar && Gdx.input.justTouched()) {
+                isDragging = true;
+                dragOffsetX = mx - x;
+                dragOffsetY = my - y;
+            }
+
+            if (isDragging) {
+                x = (int)(mx - dragOffsetX);
+                y = (int)(my - dragOffsetY);
+            }
+        } else {
+            isDragging = false;
         }
     }
 }

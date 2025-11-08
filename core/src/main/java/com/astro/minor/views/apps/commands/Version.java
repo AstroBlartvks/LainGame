@@ -6,6 +6,7 @@ import static com.astro.minor.StarField.version;
 public class Version extends Command{
     @Override
     public String execute(String[] args) {
+        status = CmdStatus.OK;
         return "(c) Navi. Tachibana General Laboratories.\n" + osName + " [" + version + "]";
     }
 }
