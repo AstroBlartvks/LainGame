@@ -1,6 +1,7 @@
 package com.astro.minor;
 
 import com.astro.minor.views.DesktopSystemOS;
+import com.astro.minor.views.apps.AppExecutor;
 import com.astro.minor.views.apps.Console;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -16,8 +17,8 @@ public class StarField extends ApplicationAdapter {
 
     private SpriteBatch batch;
     private OrthographicCamera uiCamera;
+    private AppExecutor appExecutor;
     private DesktopSystemOS desktopSystemOS;
-    private Console console;
 
     @Override
     public void create() {
@@ -26,8 +27,15 @@ public class StarField extends ApplicationAdapter {
         uiCamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         uiCamera.update();
 
+        appExecutor = new AppExecutor(batch);
+
         desktopSystemOS = new DesktopSystemOS(batch);
-        console = new Console(150, 200, 400, 500, "console_1", uiCamera);
+
+        Console console1 = new Console(150, 200, 400, 500, "console_1", uiCamera);
+        Console console2 = new Console(300, 400, 200, 300, "console_2", uiCamera);
+
+        appExecutor.addApplication(console1);
+        appExecutor.addApplication(console2);
     }
 
     @Override
@@ -44,9 +52,9 @@ public class StarField extends ApplicationAdapter {
         batch.end();
 
         uiCamera.update();
-        batch.setProjectionMatrix(uiCamera.combined);
         batch.begin();
-        console.run(batch);
+        batch.setProjectionMatrix(uiCamera.combined);
+        appExecutor.run();
         batch.end();
     }
 
@@ -64,6 +72,6 @@ public class StarField extends ApplicationAdapter {
     public void dispose() {
         batch.dispose();
         desktopSystemOS.dispose();
-        console.dispose();
+        appExecutor.dispose();
     }
 }

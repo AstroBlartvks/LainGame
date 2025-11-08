@@ -13,6 +13,7 @@ public abstract class Application implements IApplication {
     protected int x, y, width, height;
     protected String applicationName;
     protected OrthographicCamera camera;
+    protected boolean activeApplication = false;
 
     private final Color borderColor = new Color(0.4f, 0.4f, 0.4f, 1f);
     private final Color titleBarColor = new Color(0.3f, 0.3f, 0.3f, 1f);
@@ -48,6 +49,10 @@ public abstract class Application implements IApplication {
 
     public void move(int x, int y) { this.x = x; this.y = y; }
 
+    public boolean isActiveApplication() {
+        return activeApplication;
+    }
+
     public void run(SpriteBatch batch) {
         if (closed) return;
 
@@ -61,6 +66,7 @@ public abstract class Application implements IApplication {
 
         handleCloseButtonClick();
         handleDragging();
+        updateActiveState();
 
         batch.setProjectionMatrix(camera.combined);
 
@@ -70,7 +76,9 @@ public abstract class Application implements IApplication {
         float textY = y + height + titleBarHeight - 5;
         fontName.draw(batch, applicationName, textX, textY);
 
-        handleInput();
+        if (activeApplication)
+            handleInput();
+
         render(batch);
     }
 
@@ -139,5 +147,20 @@ public abstract class Application implements IApplication {
         } else {
             isDragging = false;
         }
+    }
+
+    private void updateActiveState() {
+        Vector3 mouse = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+        camera.unproject(mouse);
+        float mx = mouse.x;
+        float my = mouse.y;
+
+        float windowMinX = x - border;
+        float windowMinY = y - border;
+        float windowMaxX = x + width + border;
+        float windowMaxY = y + height + titleBarHeight + border;
+
+        activeApplication = mx >= windowMinX && mx <= windowMaxX &&
+                           my >= windowMinY && my <= windowMaxY;
     }
 }
