@@ -20,6 +20,7 @@ public class Console extends Application {
     private BitmapFont font;
     private ShapeRenderer shapeRenderer;
     private List<String> lines;
+    private List<String> rawLines;
     private StringBuilder currentInput;
     private float padding = 15f;
     private float lineHeight;
@@ -28,6 +29,7 @@ public class Console extends Application {
     private float cursorTimer = 0f;
     private int scrollOffset = 0;
     private final Map<String, Command> commands = new HashMap<>();
+    private int lastWidth = 0;
 
     public Console(int x, int y, int width, int height, String applicationName, OrthographicCamera camera) {
         super(x, y, width, height, applicationName, camera);
@@ -45,11 +47,14 @@ public class Console extends Application {
         createFontFromTTF();
         shapeRenderer = new ShapeRenderer();
         lines = new ArrayList<>();
+        rawLines = new ArrayList<>();
         currentInput = new StringBuilder();
 
         GlyphLayout layout = new GlyphLayout();
         layout.setText(font, "TEST");
         lineHeight = layout.height + lineSpacing + 1;
+
+        lastWidth = width;
 
         output(osName + " [" + version + "]");
         output("(c) Navi. Tachibana General Laboratories. All rights reserved.");
@@ -102,6 +107,7 @@ public class Console extends Application {
 
     public void output(String text) {
         if (text == null || text.isEmpty()) {
+            rawLines.add("");
             lines.add("");
             return;
         }
@@ -109,12 +115,26 @@ public class Console extends Application {
         if (text.contains("\n")) {
             String[] splitText = text.split("\n");
             for (String line : splitText) {
+                rawLines.add(line);
                 List<String> wrappedLines = wrapText(line, width - padding * 2);
                 lines.addAll(wrappedLines);
             }
         } else {
+            rawLines.add(text);
             List<String> wrappedLines = wrapText(text, width - padding * 2);
             lines.addAll(wrappedLines);
+        }
+    }
+
+    private void rewrapAllLines() {
+        lines.clear();
+        for (String rawLine : rawLines) {
+            if (rawLine.isEmpty()) {
+                lines.add("");
+            } else {
+                List<String> wrappedLines = wrapText(rawLine, width - padding * 2);
+                lines.addAll(wrappedLines);
+            }
         }
     }
 
@@ -186,6 +206,11 @@ public class Console extends Application {
 
     @Override
     public void render(SpriteBatch batch) {
+        if (width != lastWidth) {
+            rewrapAllLines();
+            lastWidth = width;
+        }
+
         batch.end();
 
         shapeRenderer.setProjectionMatrix(camera.combined);
@@ -239,7 +264,13 @@ public class Console extends Application {
             if (Gdx.input.isKeyJustPressed(i)) {
                 char c = getCharFromKey(i);
                 if (c != 0) {
-                    currentInput.append(c);
+                    String testInput = "> " + currentInput.toString() + c + "_";
+                    GlyphLayout layout = new GlyphLayout();
+                    layout.setText(font, testInput);
+
+                    if (layout.width <= width - padding * 2) {
+                        currentInput.append(c);
+                    }
                 }
             }
         }
@@ -351,6 +382,7 @@ public class Console extends Application {
 
     public void clear() {
         lines.clear();
+        rawLines.clear();
         output(osName + " [" + version + "]");
         output("(c) Navi. Tachibana General Laboratories. All rights reserved.");
         output("");
