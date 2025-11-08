@@ -309,6 +309,7 @@ public class Console extends Application {
         if (result != null && !result.isEmpty()) {
             output(result);
             output("");
+            scrollOffset = 0;
         }
 
     }

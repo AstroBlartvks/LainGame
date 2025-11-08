@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+import static java.lang.Math.abs;
+
 public abstract class Application implements IApplication {
     protected int x, y, width, height;
     protected String applicationName;
@@ -86,9 +88,11 @@ public abstract class Application implements IApplication {
         float closeY = y + height + (titleBarHeight - closeSize) / 2f;
 
         float mx = Gdx.input.getX();
-        float my = Gdx.graphics.getHeight() - Gdx.input.getY();
-        hoveredClose = mx >= closeX && mx <= closeX + closeSize &&
-            my >= closeY && my <= closeY + closeSize;
+        float my = Gdx.input.getY();
+        float diffX = abs(mx - closeX - (float) closeSize /2);
+        float diffY = abs(my - (Gdx.graphics.getHeight() - closeY) + (float) closeSize /2);
+        hoveredClose = (diffX < closeSize/2f && diffY < closeSize/2f);
+        System.out.println("Hovered: " + hoveredClose + " dx" + diffX + " dy" + diffY);
 
         shapeRenderer.setColor(hoveredClose ? closeButtonHoverColor : closeButtonColor);
         shapeRenderer.rect(closeX, closeY, closeSize, closeSize);
@@ -105,7 +109,6 @@ public abstract class Application implements IApplication {
     private void handleCloseButtonClick() {
         if (Gdx.input.justTouched() && hoveredClose) {
             closed = true;
-            dispose();
             shapeRenderer.dispose();
         }
     }
