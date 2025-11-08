@@ -16,9 +16,17 @@ public class StarField extends ApplicationAdapter {
     static public String version = "Version 1.0.0";
 
     private SpriteBatch batch;
-    private OrthographicCamera uiCamera;
-    private AppExecutor appExecutor;
+    private static OrthographicCamera uiCamera;
+    private static AppExecutor appExecutor;
     private DesktopSystemOS desktopSystemOS;
+
+    public static AppExecutor getAppExecutor() {
+        return appExecutor;
+    }
+
+    public static OrthographicCamera getUiCamera() {
+        return uiCamera;
+    }
 
     @Override
     public void create() {

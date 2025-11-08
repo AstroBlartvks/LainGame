@@ -1,6 +1,6 @@
 package com.astro.minor.views.apps.commands;
 
-public class Help extends Command{
+public class Help extends Command<String []>{
     @Override
     public String execute(String[] args) {
         this.status = CmdStatus.OK;

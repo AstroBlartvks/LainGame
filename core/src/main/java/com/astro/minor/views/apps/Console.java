@@ -40,6 +40,7 @@ public class Console extends Application {
         commands.put("version", new Version());
         commands.put("echo", new Echo());
         commands.put("clear", new Clear());
+        commands.put("start", new Start());
 
         createFontFromTTF();
         shapeRenderer = new ShapeRenderer();
@@ -325,7 +326,7 @@ public class Console extends Application {
         String[] arguments = Arrays.stream(lineCommand.split(" ")).skip(1).toArray(String[]::new);
 
         if (commands.containsKey(command.toLowerCase())) {
-            String result = commands.get(command.toLowerCase()).execute(arguments);
+            String result = commands.get(command.toLowerCase()).execute(arguments).toString();
             if (result.startsWith("#")) {
                 if (result.substring(1).equals("clear")) {
                     clear();
