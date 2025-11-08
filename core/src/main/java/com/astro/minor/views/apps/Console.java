@@ -25,7 +25,7 @@ public class Console extends Application {
     private float lineSpacing = 8f;
     private boolean showCursor = true;
     private float cursorTimer = 0f;
-    private final float CURSOR_BLINK_INTERVAL = 0.5f;
+    private int scrollOffset = 0;
     private final Map<String, Command> commands = new HashMap<>();
 
     public Console(int x, int y, int width, int height, String applicationName) {
@@ -200,29 +200,24 @@ public class Console extends Application {
         int totalLines = lines.size();
         int maxVisibleLines = (int) ((height - padding * 2) / lineHeight);
 
-        int startLine = Math.max(0, totalLines - maxVisibleLines);
+        int startLine = Math.max(0, totalLines - maxVisibleLines - scrollOffset);
+        int endLine = Math.min(totalLines, startLine + maxVisibleLines);
 
-        for (int i = startLine; i < totalLines; i++) {
-            if (currentY < visibleBottom) break;
-
+        for (int i = startLine; i < endLine; i++) {
             String line = lines.get(i);
             font.draw(batch, line, x + padding, currentY);
             currentY -= lineHeight;
         }
 
         String inputLine = "> " + currentInput.toString() + (showCursor ? "_" : "");
+        font.draw(batch, inputLine, x + padding, y + padding + lineHeight);
 
-        List<String> inputLines = wrapText(inputLine, width - padding * 2);
-        for (int i = inputLines.size() - 1; i >= 0; i--) {
-            if (currentY < visibleBottom) break;
-            font.draw(batch, inputLines.get(i), x + padding, currentY);
-            currentY -= lineHeight;
-        }
     }
 
     @Override
     public void handleInput() {
         cursorTimer += Gdx.graphics.getDeltaTime();
+        float CURSOR_BLINK_INTERVAL = 0.5f;
         if (cursorTimer >= CURSOR_BLINK_INTERVAL) {
             showCursor = !showCursor;
             cursorTimer = 0f;
@@ -244,6 +239,17 @@ public class Console extends Application {
                     currentInput.append(c);
                 }
             }
+        }
+
+        int maxVisibleLines = (int) ((height - padding * 2) / lineHeight);
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+            scrollOffset++;
+            int maxOffset = Math.max(0, lines.size() - maxVisibleLines);
+            if (scrollOffset > maxOffset) scrollOffset = maxOffset;
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
+            scrollOffset--;
+            if (scrollOffset < 0) scrollOffset = 0;
         }
     }
 
