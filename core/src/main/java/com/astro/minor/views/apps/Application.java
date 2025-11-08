@@ -3,15 +3,16 @@ package com.astro.minor.views.apps;
 import com.astro.minor.views.IApplication;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
 
 public abstract class Application implements IApplication {
     protected int x, y, width, height;
     protected String applicationName;
+    protected OrthographicCamera camera;
 
     private final Color borderColor = new Color(0.4f, 0.4f, 0.4f, 1f);
     private final Color titleBarColor = new Color(0.3f, 0.3f, 0.3f, 1f);
@@ -28,8 +29,6 @@ public abstract class Application implements IApplication {
     private boolean closed = false;
     private boolean hoveredClose = false;
 
-    protected OrthographicCamera camera;
-
     public Application(int x, int y, int width, int height, String applicationName, OrthographicCamera camera) {
         this.x = x;
         this.y = y;
@@ -39,25 +38,18 @@ public abstract class Application implements IApplication {
         this.camera = camera;
     }
 
-    public boolean isClosed() {
-        return closed;
-    }
+    public boolean isClosed() { return closed; }
 
-    public void resize(int width, int height) {
-        this.width = width;
-        this.height = height;
-    }
+    public void resize(int width, int height) { this.width = width; this.height = height; }
 
-    public void move(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
+    public void move(int x, int y) { this.x = x; this.y = y; }
 
     public void run(SpriteBatch batch) {
         if (closed) return;
 
         batch.end();
 
+        shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         drawWindowFrame();
         drawCloseButton();
@@ -65,9 +57,13 @@ public abstract class Application implements IApplication {
 
         handleCloseButtonClick();
 
+        batch.setProjectionMatrix(camera.combined);
+
         batch.begin();
         fontName.setColor(Color.WHITE);
-        fontName.draw(batch, applicationName, x + 5, y + height + titleBarHeight - 5);
+        float textX = x + 5;
+        float textY = y + height + titleBarHeight - 5;
+        fontName.draw(batch, applicationName, textX, textY);
 
         handleInput();
         render(batch);
@@ -75,7 +71,7 @@ public abstract class Application implements IApplication {
 
     private void drawWindowFrame() {
         shapeRenderer.setColor(borderColor);
-        shapeRenderer.rect(x - border, y - border, width + 2 * border, height + 2 * border + titleBarHeight);
+        shapeRenderer.rect(x - border, y - border, width + 2*border, height + 2*border + titleBarHeight);
 
         shapeRenderer.setColor(titleBarColor);
         shapeRenderer.rect(x, y + height, width, titleBarHeight);
@@ -83,14 +79,15 @@ public abstract class Application implements IApplication {
 
     private void drawCloseButton() {
         float closeX = x + width - closeSize - 4;
-        float closeY = y + height + (titleBarHeight - closeSize) / 2f;
+        float closeY = y + height + (titleBarHeight - closeSize)/2f;
 
-        // используем камеру для преобразования координат мыши
         Vector3 mouse = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
         camera.unproject(mouse);
+        float mx = mouse.x;
+        float my = mouse.y;
 
-        hoveredClose = mouse.x >= closeX && mouse.x <= closeX + closeSize &&
-            mouse.y >= closeY && mouse.y <= closeY + closeSize;
+        hoveredClose = mx >= closeX && mx <= closeX + closeSize &&
+            my >= closeY && my <= closeY + closeSize;
 
         shapeRenderer.setColor(hoveredClose ? closeButtonHoverColor : closeButtonColor);
         shapeRenderer.rect(closeX, closeY, closeSize, closeSize);

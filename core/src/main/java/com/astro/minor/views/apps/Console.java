@@ -187,6 +187,7 @@ public class Console extends Application {
     public void render(SpriteBatch batch) {
         batch.end();
 
+        shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.BLACK);
         shapeRenderer.rect(x, y, width, height);

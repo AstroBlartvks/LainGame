@@ -15,37 +15,37 @@ public class StarField extends ApplicationAdapter {
     static public String version = "Version 1.0.0";
 
     private SpriteBatch batch;
+    private OrthographicCamera uiCamera;
     private DesktopSystemOS desktopSystemOS;
     private Console console;
 
-    private OrthographicCamera camera;
-
     @Override
     public void create() {
-        Gdx.graphics.setWindowedMode(1600, 900);
-
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.update();
-
         batch = new SpriteBatch();
-        desktopSystemOS = new DesktopSystemOS(batch);
 
-        console = new Console(150, 200, 400, 500, "console_1", camera);
+        uiCamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        uiCamera.update();
+
+        desktopSystemOS = new DesktopSystemOS(batch);
+        console = new Console(150, 200, 400, 500, "console_1", uiCamera);
     }
 
     @Override
     public void render() {
         handleInput();
+        uiCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        camera.update();
-        batch.setProjectionMatrix(camera.combined);
-
+        batch.setProjectionMatrix(uiCamera.combined);
         batch.begin();
-        desktopSystemOS.render();
+        desktopSystemOS.render(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.end();
+
+        uiCamera.update();
+        batch.setProjectionMatrix(uiCamera.combined);
+        batch.begin();
         console.run(batch);
         batch.end();
     }
@@ -53,14 +53,10 @@ public class StarField extends ApplicationAdapter {
     public void handleInput() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.F11)) {
             if (Gdx.graphics.isFullscreen()) {
-                Gdx.graphics.setWindowedMode(1280, 720);
+                Gdx.graphics.setWindowedMode(1600, 900);
             } else {
-                Graphics.DisplayMode displayMode = Gdx.graphics.getDisplayMode();
-                Gdx.graphics.setFullscreenMode(displayMode);
+                Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
             }
-
-            camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-            camera.update();
         }
     }
 
@@ -68,5 +64,6 @@ public class StarField extends ApplicationAdapter {
     public void dispose() {
         batch.dispose();
         desktopSystemOS.dispose();
+        console.dispose();
     }
 }

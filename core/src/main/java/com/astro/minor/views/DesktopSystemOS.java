@@ -18,8 +18,8 @@ public class DesktopSystemOS {
         backgroundTexture = new Texture(Gdx.files.internal("computer/root/lain/system/wall.jpg"));
     }
 
-    public void render() {
-        batch.draw(backgroundTexture, 0, 0, 1600, 900);
+    public void render(float screenWidth, float screenHeight) {
+        batch.draw(backgroundTexture, 0, 0, screenWidth, screenHeight);
     }
 
     public void dispose() {
