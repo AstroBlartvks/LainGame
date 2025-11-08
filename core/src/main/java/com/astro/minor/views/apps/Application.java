@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-
-import static java.lang.Math.abs;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector3;
 
 public abstract class Application implements IApplication {
     protected int x, y, width, height;
@@ -28,12 +28,15 @@ public abstract class Application implements IApplication {
     private boolean closed = false;
     private boolean hoveredClose = false;
 
-    public Application(int x, int y, int width, int height, String applicationName) {
+    protected OrthographicCamera camera;
+
+    public Application(int x, int y, int width, int height, String applicationName, OrthographicCamera camera) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.applicationName = applicationName;
+        this.camera = camera;
     }
 
     public boolean isClosed() {
@@ -63,21 +66,16 @@ public abstract class Application implements IApplication {
         handleCloseButtonClick();
 
         batch.begin();
-
         fontName.setColor(Color.WHITE);
-        float textX = x + 5;
-        float textY = y + height + titleBarHeight - 5;
-        fontName.draw(batch, applicationName, textX, textY);
+        fontName.draw(batch, applicationName, x + 5, y + height + titleBarHeight - 5);
 
         handleInput();
         render(batch);
-
     }
 
     private void drawWindowFrame() {
         shapeRenderer.setColor(borderColor);
-        shapeRenderer.rect(x - border, y - border,
-            width + 2 * border, height + 2 * border + titleBarHeight);
+        shapeRenderer.rect(x - border, y - border, width + 2 * border, height + 2 * border + titleBarHeight);
 
         shapeRenderer.setColor(titleBarColor);
         shapeRenderer.rect(x, y + height, width, titleBarHeight);
@@ -87,12 +85,12 @@ public abstract class Application implements IApplication {
         float closeX = x + width - closeSize - 4;
         float closeY = y + height + (titleBarHeight - closeSize) / 2f;
 
-        float mx = Gdx.input.getX();
-        float my = Gdx.input.getY();
-        float diffX = abs(mx - closeX - (float) closeSize /2);
-        float diffY = abs(my - (Gdx.graphics.getHeight() - closeY) + (float) closeSize /2);
-        hoveredClose = (diffX < closeSize/2f && diffY < closeSize/2f);
-        System.out.println("Hovered: " + hoveredClose + " dx" + diffX + " dy" + diffY);
+        // используем камеру для преобразования координат мыши
+        Vector3 mouse = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+        camera.unproject(mouse);
+
+        hoveredClose = mouse.x >= closeX && mouse.x <= closeX + closeSize &&
+            mouse.y >= closeY && mouse.y <= closeY + closeSize;
 
         shapeRenderer.setColor(hoveredClose ? closeButtonHoverColor : closeButtonColor);
         shapeRenderer.rect(closeX, closeY, closeSize, closeSize);
@@ -100,10 +98,8 @@ public abstract class Application implements IApplication {
         shapeRenderer.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.BLACK);
-        shapeRenderer.line(closeX + 3, closeY + 3,
-            closeX + closeSize - 3, closeY + closeSize - 3);
-        shapeRenderer.line(closeX + 3, closeY + closeSize - 3,
-            closeX + closeSize - 3, closeY + 3);
+        shapeRenderer.line(closeX + 3, closeY + 3, closeX + closeSize - 3, closeY + closeSize - 3);
+        shapeRenderer.line(closeX + 3, closeY + closeSize - 3, closeX + closeSize - 3, closeY + 3);
     }
 
     private void handleCloseButtonClick() {

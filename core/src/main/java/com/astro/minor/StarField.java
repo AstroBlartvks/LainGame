@@ -7,6 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class StarField extends ApplicationAdapter {
@@ -17,13 +18,20 @@ public class StarField extends ApplicationAdapter {
     private DesktopSystemOS desktopSystemOS;
     private Console console;
 
+    private OrthographicCamera camera;
+
     @Override
     public void create() {
         Gdx.graphics.setWindowedMode(1600, 900);
-        this.batch = new SpriteBatch();
-        this.desktopSystemOS = new DesktopSystemOS(batch);
 
-        this.console = new Console(150, 200, 400, 500, "console_1");
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera.update();
+
+        batch = new SpriteBatch();
+        desktopSystemOS = new DesktopSystemOS(batch);
+
+        console = new Console(150, 200, 400, 500, "console_1", camera);
     }
 
     @Override
@@ -33,12 +41,14 @@ public class StarField extends ApplicationAdapter {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        camera.update();
+        batch.setProjectionMatrix(camera.combined);
+
         batch.begin();
         desktopSystemOS.render();
         console.run(batch);
         batch.end();
     }
-
 
     public void handleInput() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.F11)) {
@@ -48,6 +58,9 @@ public class StarField extends ApplicationAdapter {
                 Graphics.DisplayMode displayMode = Gdx.graphics.getDisplayMode();
                 Gdx.graphics.setFullscreenMode(displayMode);
             }
+
+            camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            camera.update();
         }
     }
 

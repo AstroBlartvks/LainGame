@@ -4,6 +4,7 @@ import com.astro.minor.views.apps.commands.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -28,8 +29,8 @@ public class Console extends Application {
     private int scrollOffset = 0;
     private final Map<String, Command> commands = new HashMap<>();
 
-    public Console(int x, int y, int width, int height, String applicationName) {
-        super(x, y, width, height, applicationName);
+    public Console(int x, int y, int width, int height, String applicationName, OrthographicCamera camera) {
+        super(x, y, width, height, applicationName, camera);
         initialize();
     }
 
