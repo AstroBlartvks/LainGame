@@ -1,11 +1,11 @@
 package com.astro.minor;
 
+import com.astro.minor.fileOS.FileSystemManager;
 import com.astro.minor.views.DesktopSystemOS;
 import com.astro.minor.views.apps.AppExecutor;
 import com.astro.minor.views.apps.Console;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -18,6 +18,7 @@ public class StarField extends ApplicationAdapter {
     private SpriteBatch batch;
     private static OrthographicCamera uiCamera;
     private static AppExecutor appExecutor;
+    private static FileSystemManager systemFileManager;
     private DesktopSystemOS desktopSystemOS;
 
     public static AppExecutor getAppExecutor() {
@@ -36,14 +37,13 @@ public class StarField extends ApplicationAdapter {
         uiCamera.update();
 
         appExecutor = new AppExecutor(batch);
+        systemFileManager = new FileSystemManager("./computer/");
 
         desktopSystemOS = new DesktopSystemOS(batch);
 
         Console console1 = new Console(150, 200, 400, 500, "console_1", uiCamera);
-        Console console2 = new Console(300, 400, 200, 300, "console_2", uiCamera);
 
         appExecutor.addApplication(console1);
-        appExecutor.addApplication(console2);
     }
 
     @Override

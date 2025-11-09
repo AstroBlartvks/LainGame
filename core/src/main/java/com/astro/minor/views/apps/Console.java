@@ -1,5 +1,6 @@
 package com.astro.minor.views.apps;
 
+import com.astro.minor.fileOS.FileSystemManager;
 import com.astro.minor.views.apps.commands.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -29,10 +30,12 @@ public class Console extends Application {
     private float cursorTimer = 0f;
     private int scrollOffset = 0;
     private final Map<String, Command> commands = new HashMap<>();
+    private final FileSystemManager fileSystemManager;
     private int lastWidth = 0;
 
     public Console(int x, int y, int width, int height, String applicationName, OrthographicCamera camera) {
         super(x, y, width, height, applicationName, camera);
+        fileSystemManager = new FileSystemManager("./computer/");
         initialize();
     }
 
@@ -43,6 +46,9 @@ public class Console extends Application {
         commands.put("echo", new Echo());
         commands.put("clear", new Clear());
         commands.put("start", new Start());
+        commands.put("ls", new Ls(fileSystemManager));
+        commands.put("cd", new Cd(fileSystemManager));
+        commands.put("exec", new Exec(fileSystemManager));
 
         createFontFromTTF();
         shapeRenderer = new ShapeRenderer();
@@ -89,7 +95,7 @@ public class Console extends Application {
         chars.append("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
         chars.append("abcdefghijklmnopqrstuvwxyz");
         chars.append("0123456789");
-        chars.append("!@#$%^&*()_+-=[]{}|;:',.<>?/`~ \"");
+        chars.append("!@#$%^&*()_+-=[]{}|;:',.<>?/`~ \"\\");
 
         for (char c = 'А'; c <= 'Я'; c++) {
             chars.append(c);
