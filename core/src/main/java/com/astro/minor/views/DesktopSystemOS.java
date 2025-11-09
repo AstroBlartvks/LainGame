@@ -1,9 +1,11 @@
 package com.astro.minor.views;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class DesktopSystemOS implements Runnable{
     private final SpriteBatch batch;
@@ -12,14 +14,18 @@ public class DesktopSystemOS implements Runnable{
     private float screenWidth;
     private float screenHeight;
     private final GlyphLayout layout = new GlyphLayout();
+    private final ShapeRenderer shapeRenderer = new ShapeRenderer();
+    private final OrthographicCamera camera;
 
-    public DesktopSystemOS(SpriteBatch batch) {
+    public DesktopSystemOS(SpriteBatch batch, OrthographicCamera camera) {
         this.batch = batch;
-        this.menuBar = new MenuBar(batch, layout);
+        this.menuBar = new MenuBar(batch, layout, shapeRenderer);
+        this.camera = camera;
 
         if (!Gdx.files.internal("wall.jpg").exists()) {
             System.out.println("[ERROR] Background file not found!");
         }
+
 
         backgroundTexture = new Texture(Gdx.files.internal("wall.jpg"));
     }
@@ -30,7 +36,13 @@ public class DesktopSystemOS implements Runnable{
     }
 
     private void render() {
-        batch.draw(backgroundTexture, 0, 52f * screenHeight/1080f, screenWidth, screenHeight - 52f * screenHeight/1080f);
+        camera.update();
+        batch.setProjectionMatrix(camera.combined);
+        shapeRenderer.setProjectionMatrix(camera.combined);
+        batch.draw(backgroundTexture, 0, 0, screenWidth, screenHeight);
+
+        batch.setProjectionMatrix(camera.combined);
+        shapeRenderer.setProjectionMatrix(camera.combined);
         menuBar.render(screenWidth, screenHeight);
     }
 

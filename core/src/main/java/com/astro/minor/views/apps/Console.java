@@ -49,6 +49,11 @@ public class Console extends Application {
         commands.put("ls", new Ls(fileSystemManager));
         commands.put("cd", new Cd(fileSystemManager));
         commands.put("exec", new Exec(fileSystemManager));
+        commands.put("pwd", new Pwd(fileSystemManager));
+
+
+        commands.put("lain", new Lain());
+        commands.put("love", new Love());
 
         createFontFromTTF();
         shapeRenderer = new ShapeRenderer();

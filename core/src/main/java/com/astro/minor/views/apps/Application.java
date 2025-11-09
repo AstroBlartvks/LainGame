@@ -15,8 +15,8 @@ public abstract class Application implements IApplication {
     protected OrthographicCamera camera;
     protected boolean activeApplication = false;
 
-    private final Color borderColor = new Color(0.4f, 0.4f, 0.4f, 1f);
-    private final Color titleBarColor = new Color(0.3f, 0.3f, 0.3f, 1f);
+    private final Color borderColor = new Color(0.56f, 0.61f, 0.8f, 0.8f);
+    private final Color titleBarColor = new Color(0.42f, 0.46f, 0.6f, 0.8f);
     private final Color closeButtonColor = new Color(0.8f, 0.2f, 0.2f, 1f);
     private final Color closeButtonHoverColor = new Color(1f, 0.3f, 0.3f, 1f);
     private final BitmapFont fontName = new BitmapFont();

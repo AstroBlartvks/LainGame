@@ -4,6 +4,7 @@ import com.astro.minor.fileOS.FileSystemManager;
 import com.astro.minor.views.DesktopSystemOS;
 import com.astro.minor.views.apps.AppExecutor;
 import com.astro.minor.views.apps.Console;
+import com.astro.minor.views.apps.FileExplorer;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -39,11 +40,8 @@ public class StarField extends ApplicationAdapter {
         appExecutor = new AppExecutor(batch);
         systemFileManager = new FileSystemManager("./computer/");
 
-        desktopSystemOS = new DesktopSystemOS(batch);
+        desktopSystemOS = new DesktopSystemOS(batch, uiCamera);
 
-        Console console1 = new Console(150, 200, 400, 500, "console_1", uiCamera);
-
-        appExecutor.addApplication(console1);
     }
 
     @Override
@@ -54,6 +52,7 @@ public class StarField extends ApplicationAdapter {
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        uiCamera.update();
         batch.setProjectionMatrix(uiCamera.combined);
         batch.begin();
         desktopSystemOS.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
