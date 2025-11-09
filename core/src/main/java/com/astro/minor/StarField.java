@@ -56,7 +56,8 @@ public class StarField extends ApplicationAdapter {
 
         batch.setProjectionMatrix(uiCamera.combined);
         batch.begin();
-        desktopSystemOS.render(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        desktopSystemOS.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        desktopSystemOS.run();
         batch.end();
 
         uiCamera.update();
