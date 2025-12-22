@@ -4,7 +4,6 @@ import com.astro.minor.system.apps.base.Application;
 import com.astro.minor.wired.core.*;
 import com.astro.minor.wired.core.LayoutBox;
 import com.astro.minor.wired.core.LinkInfo;
-import com.astro.minor.wired.elements.*;
 import com.astro.minor.wired.events.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
@@ -216,7 +215,7 @@ public class Browser extends Application {
             Vector3 mouse = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(mouse);
 
-            Gdx.app.log("Browser", "Click at (" + mouse.x + ", " + mouse.y + ")");
+            // Gdx.app.log("Browser", "Click at (" + mouse.x + ", " + mouse.y + ")");
 
             float toolbarY = y + height - TOOLBAR_HEIGHT;
 
@@ -247,7 +246,7 @@ public class Browser extends Application {
                 event.handle();
             }
         } else if (type.startsWith("onclick:")) {
-            String functionName = type.substring(8); // Remove "onclick:" prefix
+            String functionName = type.substring(8);
             com.astro.minor.wired.events.OnClickEvent event =
                 new com.astro.minor.wired.events.OnClickEvent(functionName);
             event.handle();

@@ -1,6 +1,6 @@
 package com.astro.minor.wired.tags;
 
-import com.astro.minor.wired.elements.WiredElement;
+import com.astro.minor.wired.core.WiredElement;
 
 import java.util.ArrayList;
 import java.util.List;
