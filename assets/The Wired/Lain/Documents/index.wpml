@@ -1,0 +1,106 @@
+@title WPML - тест
+@bg #000033
+@text #00FF40
+@link #00FFFF
+
+[wpml]
+[center]
+[h1 color="#FF00FF"]Добропожаловать[/h1]
+[/center]
+
+[hr width="80%" color="#00FF40"]
+
+[p]Эта страница написана на WPML (Wired Page Markup Language). WPML - это современный формат отображения информации из Wired!.[/p]
+
+[h2]Форматы[/h2]
+
+[p]Вы можете импользовать [b]жирный[/b], [i]курсивный[/i], и [u]подчеркнутый[/u] тексты! А также можно комбинировать: [b][i][u]жирный курсив с подчеркиванием[/u][/i][/b].[/p]
+
+[p]Разные [font color="#FF0000"]цвета![/font] [font color="#00FF00"]текста[/font] [font color="#0000FF"]это[/font] [font color="#FFFF00"]поддерживается[/font] тоже![/p]
+
+[h2]Листы[/h2]
+
+[h3]Ненумерованные листы:[/h3]
+[ul]
+[li]Предмет А[/li]
+[li]Предмет Б[/li]
+[li]Предмет В[/li]
+[/ul]
+
+[h3]Нумерованные листы:[/h3]
+[ol]
+[li]Предмет 1[/li]
+[li]Предмет 2[/li]
+[li]Предмет 3[/li]
+[/ol]
+
+[hr]
+
+[h2]Контейнеры и блоки![/h2]
+
+[div bgcolor="#001122" color="#FFFF00" width="80%"]
+Это контейнер с задним фоном и кастомным цветом текста! А также он занимает 80% ширины!.
+[/div]
+
+[br]
+
+[center]
+[div bgcolor="#330000" color="#FF8800" width="50%"]
+Отцентрованный контейнер. Он крутой, чувствую вайб
+[/div]
+[/center]
+
+[hr]
+
+[h2]Спец эффекты![/h2]
+
+[p]Здесь есть немного [blink]Мигалок[/blink] - это новое слово в дизайне![/p]
+
+[marquee]А этот текст прямо как на вывеске... модный![/marquee]
+
+[hr]
+
+[h2]Таблицы[/h2]
+
+[p]Пример простой таблицы:[/p]
+
+[table border="1" bordercolor="#00FF40" width="90%" align="center"]
+[tr]
+[td bgcolor="#001122" color="#FFFF00" align="center"]Заголовок 1[/td]
+[td bgcolor="#001122" color="#FFFF00" align="center"]Заголовок 2[/td]
+[td bgcolor="#001122" color="#FFFF00" align="center"]Заголовок 3[/td]
+[/tr]
+[tr]
+[td]Ячейка 1[/td]
+[td align="center"]Ячейка 2[/td]
+[td align="right"]Ячейка 3[/td]
+[/tr]
+[tr]
+[td bgcolor="#003344"]Цветная[/td]
+[td color="#FF0000"]Красный текст[/td]
+[td][b]Жирный текст[/b][/td]
+[/tr]
+[/table]
+
+[hr]
+
+[h2]Изображения[/h2]
+
+[center]
+[img src="img.png" width="200" border="2"]
+[p][i]Lain из The Wired[/i][/p]
+[/center]
+
+[hr]
+
+[h2]Ссылки[/h2]
+
+[p]Кликните сюда и перейдете на: [a href="page2.wpml"]страницу 2[/a] или [a href="about.wpml" color="#FF00FF"]страницу о нас (не доделали)[/a][/p]
+
+[hr]
+
+[center]
+[p color="#00FFFF"]© 1998 The Wired - Tachibana General Laboratories[/p]
+[/center]
+
+[/wpml]

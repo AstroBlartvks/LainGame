@@ -4,9 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 
-/**
- * Контейнер для вертикального расположения компонентов
- */
+
 public class VBox extends BaseUIComponent {
     private Array<UIComponent> components;
     private float spacing = 5f;
@@ -24,33 +22,25 @@ public class VBox extends BaseUIComponent {
         this.components = new Array<>();
     }
 
-    /**
-     * Добавление компонента
-     */
+    
     public void addComponent(UIComponent component) {
         components.add(component);
         layoutComponents();
     }
 
-    /**
-     * Удаление компонента
-     */
+    
     public void removeComponent(UIComponent component) {
         components.removeValue(component, true);
         layoutComponents();
     }
 
-    /**
-     * Очистка всех компонентов
-     */
+    
     public void clear() {
         components.clear();
         height = 0;
     }
 
-    /**
-     * Получение компонента по индексу
-     */
+    
     public UIComponent getComponent(int index) {
         if (index >= 0 && index < components.size) {
             return components.get(index);
@@ -58,9 +48,7 @@ public class VBox extends BaseUIComponent {
         return null;
     }
 
-    /**
-     * Получение всех компонентов
-     */
+    
     public Array<UIComponent> getComponents() {
         return components;
     }
@@ -71,7 +59,6 @@ public class VBox extends BaseUIComponent {
 
         if (!active || !visible) return;
 
-        // Используем индексный цикл чтобы избежать nested iterator
         for (int i = 0; i < components.size; i++) {
             UIComponent component = components.get(i);
             if (component != null) {
@@ -84,7 +71,6 @@ public class VBox extends BaseUIComponent {
     public void render(SpriteBatch batch, ShapeRenderer shapeRenderer) {
         if (!visible) return;
 
-        // Отрисовка фона
         if (drawBackground) {
             boolean wasBatchDrawing = batch.isDrawing();
             if (wasBatchDrawing) {
@@ -96,7 +82,6 @@ public class VBox extends BaseUIComponent {
             }
         }
 
-        // Отрисовка компонентов
         for (int i = 0; i < components.size; i++) {
             UIComponent component = components.get(i);
             if (component != null && component.isVisible()) {
@@ -105,14 +90,11 @@ public class VBox extends BaseUIComponent {
         }
     }
 
-    /**
-     * Расположение компонентов по вертикали
-     */
+    
     private void layoutComponents() {
         float currentY = y + height;
         float totalHeight = 0;
 
-        // Сначала вычисляем общую высоту
         for (UIComponent component : components) {
             if (component != null) {
                 totalHeight += component.getHeight();
@@ -120,11 +102,9 @@ public class VBox extends BaseUIComponent {
         }
         totalHeight += spacing * Math.max(0, components.size - 1);
 
-        // Обновляем высоту контейнера
         this.height = totalHeight;
         currentY = y + height;
 
-        // Размещаем компоненты
         for (UIComponent component : components) {
             if (component != null) {
                 currentY -= component.getHeight();
@@ -138,13 +118,10 @@ public class VBox extends BaseUIComponent {
             }
         }
 
-        // Обновляем bounds
         bounds.setSize(width, height);
     }
 
-    /**
-     * Установка отступов между компонентами
-     */
+    
     public void setSpacing(float spacing) {
         this.spacing = spacing;
         layoutComponents();
@@ -154,9 +131,7 @@ public class VBox extends BaseUIComponent {
         return spacing;
     }
 
-    /**
-     * Автоматическое изменение ширины компонентов
-     */
+    
     public void setAutoResize(boolean autoResize) {
         this.autoResize = autoResize;
         if (autoResize) {
@@ -168,9 +143,7 @@ public class VBox extends BaseUIComponent {
         return autoResize;
     }
 
-    /**
-     * Отрисовка фона
-     */
+    
     public void setDrawBackground(boolean draw) {
         this.drawBackground = draw;
     }
@@ -178,7 +151,6 @@ public class VBox extends BaseUIComponent {
     @Override
     public void setSize(float width, float height) {
         this.width = width;
-        // Высота вычисляется автоматически
         layoutComponents();
     }
 

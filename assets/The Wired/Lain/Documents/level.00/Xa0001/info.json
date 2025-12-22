@@ -1,0 +1,14 @@
+{
+  "ID": "Xa0001",
+  "Location": "site A, level 1, #-7",
+  "Info": "",
+  "Misc": {
+    "SW": "0",
+    "q": "0",
+    "state": "hidden",
+    "type": "2"
+  },
+  "Depends on": [],
+  "Tags": [11111],
+  "Reveals": []
+}

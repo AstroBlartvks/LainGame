@@ -6,9 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 
-/**
- * Базовый абстрактный класс для UI компонентов
- */
+
 public abstract class BaseUIComponent implements UIComponent {
     protected float x, y;
     protected float width, height;
@@ -36,7 +34,6 @@ public abstract class BaseUIComponent implements UIComponent {
             return;
         }
 
-        // Проверка наведения мыши
         int mouseX = Gdx.input.getX();
         int mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
         hover = contains(mouseX, mouseY);
@@ -106,7 +103,6 @@ public abstract class BaseUIComponent implements UIComponent {
         return visible;
     }
 
-    // Дополнительные методы для настройки внешнего вида
     public void setBackgroundColor(Color color) {
         this.backgroundColor = color;
     }
@@ -147,16 +143,13 @@ public abstract class BaseUIComponent implements UIComponent {
         return hoverColor;
     }
 
-    /**
-     * Отрисовка фона компонента
-     */
+    
     protected void renderBackground(ShapeRenderer shapeRenderer) {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(hover ? hoverColor : backgroundColor);
         shapeRenderer.rect(x, y, width, height);
         shapeRenderer.end();
 
-        // Граница
         if (borderWidth > 0) {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
             shapeRenderer.setColor(borderColor);
@@ -168,6 +161,5 @@ public abstract class BaseUIComponent implements UIComponent {
 
     @Override
     public void dispose() {
-        // Переопределить в подклассах при необходимости
     }
 }

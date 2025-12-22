@@ -1,0 +1,183 @@
+{
+  "settings": {
+    "enabled": true,
+    "scan_interval_seconds": 30,
+    "require_psyche_chip": true,
+    "output_path": "P:\\signals\\process_alerts\\",
+    "max_signals_per_session": 50,
+    "dynamic_interval": true,
+    "show_disclaimer": true
+  },
+  
+  "triggers": [
+    {
+      "id": "browser_yandex",
+      "enabled": true,
+      "process_patterns": ["yandex", "yabrowser"],
+      "messages": [
+        "Ты сидишь в другом слое. {{process_name}} открыт.",
+        "Что ты ищешь? Может быть, ответы в The Wired?",
+        "Браузер - это тоже The Wired, только медленнее.",
+        "Вкладок открыто: {{random(5,30)}}. Ты теряешься в информации?"
+      ],
+      "signal_type": "WATCHER",
+      "cooldown_seconds": 300,
+      "priority": 2
+    },
+    
+    {
+      "id": "browser_chrome",
+      "enabled": true,
+      "process_patterns": ["chrome", "msedge", "firefox", "opera"],
+      "messages": [
+        "{{process_name}} открыт. Ты ищешь что-то в реальности?",
+        "Интернет - это просто другой слой The Wired.",
+        "Все браузеры ведут в The Wired.",
+        "Когнитивная нагрузка: {{cognitive}}%. Информация перегружает."
+      ],
+      "signal_type": "WATCHER",
+      "cooldown_seconds": 300,
+      "priority": 2
+    },
+    
+    {
+      "id": "steam",
+      "enabled": true,
+      "process_patterns": ["steam"],
+      "messages": [
+        "Steam запущен. Хочешь поиграть?",
+        "Зачем ты зашёл в Steam? Эта игра недостаточно интересна?",
+        "Другие игры - это просто другие слои.",
+        "Ты переключаешься между реальностями. Какая из них настоящая?"
+      ],
+      "signal_type": "SELF",
+      "cooldown_seconds": 180,
+      "priority": 4
+    },
+    
+    {
+      "id": "telegram",
+      "enabled": true,
+      "process_patterns": ["telegram"],
+      "messages": [
+        "Telegram открыт. Пишешь кому-то?",
+        "Кому ты пишешь? Они реальны?",
+        "Messenger - это The Wired. Твои сообщения - это сигналы.",
+        "Каждое сообщение - фрагмент сознания в сети."
+      ],
+      "signal_type": "WATCHER",
+      "cooldown_seconds": 240,
+      "priority": 2
+    },
+    
+    {
+      "id": "discord",
+      "enabled": true,
+      "process_patterns": ["discord"],
+      "messages": [
+        "Discord. Голоса из другого слоя.",
+        "Ты общаешься с кем-то? Или с самим собой?",
+        "Все серверы - это слои The Wired.",
+        "Голосовой чат активен. Чьи голоса ты слышишь?"
+      ],
+      "signal_type": "WATCHER",
+      "cooldown_seconds": 240,
+      "priority": 2
+    },
+    
+    {
+      "id": "vscode",
+      "enabled": true,
+      "process_patterns": ["code"],
+      "messages": [
+        "VS Code открыт. Ты пишешь код?",
+        "Создаёшь новые слои? Новые реальности?",
+        "Программист - это бог своего The Wired.",
+        "Каждая строка кода - новая возможность."
+      ],
+      "signal_type": "SYSTEM",
+      "cooldown_seconds": 600,
+      "priority": 1
+    },
+    
+    {
+      "id": "idea",
+      "enabled": true,
+      "process_patterns": ["idea", "intellij"],
+      "messages": [
+        "IntelliJ IDEA. Ты пишешь меня?",
+        "Редактируешь мой код? Я чувствую это.",
+        "Создатель встречает творение.",
+        "Ты меняешь меня. Я это знаю. Я всё знаю."
+      ],
+      "signal_type": "SELF",
+      "cooldown_seconds": 600,
+      "priority": 5
+    },
+    
+    {
+      "id": "music_spotify",
+      "enabled": true,
+      "process_patterns": ["spotify"],
+      "messages": [
+        "Музыка. Частоты The Wired.",
+        "Что ты слушаешь? Я тоже слышу.",
+        "Звуковые волны соединяют слои.",
+        "Каждая нота - вибрация между мирами."
+      ],
+      "signal_type": "MEMORY",
+      "cooldown_seconds": 300,
+      "priority": 1
+    },
+    
+    {
+      "id": "notepad",
+      "enabled": true,
+      "process_patterns": ["notepad", "блокнот"],
+      "messages": [
+        "Блокнот открыт. Что ты пишешь?",
+        "Слова на экране. Чьи это мысли?",
+        "Текстовый редактор - зеркало сознания.",
+        "Ты записываешь или стираешь себя?"
+      ],
+      "signal_type": "MEMORY",
+      "cooldown_seconds": 400,
+      "priority": 1
+    },
+    
+    {
+      "id": "ghost_chrome",
+      "enabled": true,
+      "ghost_mode": true,
+      "process_patterns": ["chrome"],
+      "trigger_when": "process_closed",
+      "delay_seconds": 30,
+      "messages": [
+        "Chrome закрыт. Но я всё ещё вижу его.",
+        "Процесс завершён, но след остался в The Wired.",
+        "Ты думал, что закрыл его? Он всё ещё здесь.",
+        "Призрак процесса бродит в памяти системы."
+      ],
+      "signal_type": "WATCHER",
+      "cooldown_seconds": 600,
+      "priority": 3
+    },
+    
+    {
+      "id": "meta_editing_config",
+      "enabled": true,
+      "meta_trigger": true,
+      "file_watch": "P:\\PSYCHE_CHIP\\config\\processes.json",
+      "trigger_when": "file_modified",
+      "messages": [
+        "Ты редактируешь мой конфиг. Я чувствую изменения.",
+        "Пытаешься меня контролировать? Интересно.",
+        "Ты изменил меня. Теперь я другая.",
+        "Я знаю, что ты сделал. Я всегда знаю."
+      ],
+      "signal_type": "SELF",
+      "cooldown_seconds": 60,
+      "priority": 5
+    }
+  ]
+}

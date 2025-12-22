@@ -1,0 +1,80 @@
+@title Мой крутой сайт 90-х
+@bg #008080
+@text #000000
+@link #0000FF
+
+[center]
+[h1 color="#FFFFFF" align="center"]Добро пожаловать на мой сайт![/h1]
+[p color="#FFFFFF" align="center"]Самый крутой сайт в интернете![/p]
+[/center]
+
+[marquee][blink]!!! ВАЖНОЕ ОБЪЯВЛЕНИЕ !!![/blink] Сайт находится в разработке! Заходите в гостевую книгу![/marquee]
+
+[h2 color="#000080"]Навигация[/h2]
+[ul]
+[li][a href="index.wired"]Главная[/a][/li]
+[li][a href="about.wired"]Обо мне[/a][/li]
+[li][a href="interests.wired"]Мои интересы[/a][/li]
+[li][a href="gallery.wired"]Фотогалерея[/a][/li]
+[li][a href="links.wired"]Ссылки[/a][/li]
+[li][a href="guestbook.wired"]Гостевая книга[/a][/li]
+[li][a href="mailto:me@email.wired"]E-mail[/a][/li]
+[/ul]
+
+[center]
+[img src="spin.gif" border="1" width="200"][br]
+[p]Посетителей: 12345[/p]
+[/center]
+
+
+[h2 color="#000080"]Добро пожаловать![/h2]
+[p]Приветствую вас на моем личном сайте! Здесь вы найдете много интересной информации обо мне и моих увлечениях.[/p]
+
+[center]
+[img src="under_construction.gif" align="center" border="0"][br]
+[p]Этот раздел находится в разработке. Заходите позже![/p]
+[/center]
+
+[h2 color="#000080"]Обо мне[/h2]
+[p]Меня зовут Алексей, и я создал этот сайт, чтобы поделиться своими мыслями и интересами с миром.[/p]
+[p]Мои хобби:[/p]
+[ul]
+[li]Программирование[/li]
+[li]Компьютерные игры[/li]
+[li]Музыка 90-х[/li]
+[li]Коллекционирование[/li]
+[/ul]
+
+[h2 color="#000080"]Мои любимые цитаты[/h2]
+[div bgcolor="#E0E0E0" width="90%"]
+[p][i]"Интернет - это будущее!"[/i][/p]
+[p][i]"Спасибо, что зашли на мой сайт!"[/i][/p]
+[/div]
+
+[h2 color="#000080"]Гостевая книга[/h2]
+[div bgcolor="#FFFFFF" width="95%" border="1"]
+[p][b]Анна:[/b] Классный сайт! Удачи в развитии! (15.03.1999)[/p]
+[p][b]Сергей:[/b] Привет! Заходи на мой сайт тоже! (12.03.1999)[/p]
+
+[hr width="90%" color="#000080"]
+
+[h3]Оставить сообщение:[/h3]
+[p]Имя: [input type="text"][/p]
+[p]E-mail: [input type="text"][/p]
+[p]Сообщение:[br][textarea rows="5" cols="40"][/textarea][/p]
+[center][button]Отправить[/button][/center]
+
+[/div]
+
+
+
+[center]
+[div bgcolor="#000080" color="#FFFFFF" width="800" align="center"]
+[p]© 1999 Мой крутой сайт. Все права защищены.[/p]
+[p]Последнее обновление: 20 марта 1999 года[/p]
+[p]
+[img src="email.gif"] [a href="mailto:me@email.wired" color="#FFFFFF"]Написать мне[/a] |
+[img src="home.gif"] [a href="index.wired" color="#FFFFFF"]На главную[/a]
+[/p]
+[/div]
+[/center]

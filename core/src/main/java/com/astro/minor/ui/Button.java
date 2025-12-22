@@ -9,9 +9,7 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-/**
- * Компонент кнопки с текстом и иконкой
- */
+
 public class Button extends BaseUIComponent {
     private String text;
     private BitmapFont font;
@@ -60,11 +58,9 @@ public class Button extends BaseUIComponent {
             return;
         }
 
-        // Проверка нажатия
         if (hover && Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
             pressed = true;
         } else {
-            // Если кнопка была нажата и отпущена, вызываем клик
             if (pressed && !Gdx.input.isButtonPressed(Input.Buttons.LEFT) && hover) {
                 handleClick();
             }
@@ -76,14 +72,12 @@ public class Button extends BaseUIComponent {
     public void render(SpriteBatch batch, ShapeRenderer shapeRenderer) {
         if (!visible) return;
 
-        // Закрываем batch для ShapeRenderer (только если он открыт)
         boolean wasBatchDrawing = batch.isDrawing();
         if (wasBatchDrawing) {
             batch.end();
         }
 
         if (!isIconButton) {
-            // Рисуем фон и границу для обычной кнопки
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             if (pressed) {
                 shapeRenderer.setColor(pressedColor);
@@ -95,7 +89,6 @@ public class Button extends BaseUIComponent {
             shapeRenderer.rect(x, y, width, height);
             shapeRenderer.end();
 
-            // Граница
             if (borderWidth > 0) {
                 shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
                 shapeRenderer.setColor(borderColor);
@@ -105,17 +98,14 @@ public class Button extends BaseUIComponent {
             }
         }
 
-        // Открываем batch для отрисовки контента (если он не был открыт)
         if (!batch.isDrawing()) {
             batch.begin();
         }
 
-        // Отрисовка иконки и текста
 
         float contentX = x;
         float totalContentWidth = 0;
 
-        // Подсчет общей ширины контента
         if (icon != null) {
             totalContentWidth += iconWidth + iconPadding;
         }
@@ -123,10 +113,8 @@ public class Button extends BaseUIComponent {
             totalContentWidth += layout.width;
         }
 
-        // Центрирование контента
         contentX = x + (width - totalContentWidth) / 2;
 
-        // Отрисовка иконки
         if (icon != null) {
             float iconY = y + (height - iconHeight) / 2;
             batch.draw(icon, contentX, iconY, iconWidth, iconHeight);
@@ -134,35 +122,27 @@ public class Button extends BaseUIComponent {
         }
 
         if (!isIconButton) {
-            // Отрисовка текста
             if (text != null && !text.isEmpty()) {
                 font.setColor(textColor);
                 float textY = y + (height + layout.height) / 2;
                 font.draw(batch, text, contentX, textY);
             }
         }
-        // batch остается открытым для следующих компонентов
     }
 
-    /**
-     * Обработка клика по кнопке
-     */
+    
     public void handleClick() {
         if (clickListener != null) {
             clickListener.onClick(this);
         }
     }
 
-    /**
-     * Установка слушателя кликов
-     */
+    
     public void setClickListener(ClickListener listener) {
         this.clickListener = listener;
     }
 
-    /**
-     * Установка текста кнопки
-     */
+    
     public void setText(String text) {
         this.text = text;
         updateTextLayout();
@@ -172,9 +152,7 @@ public class Button extends BaseUIComponent {
         return text;
     }
 
-    /**
-     * Установка иконки кнопки
-     */
+    
     public void setBackgroundIcon(Texture icon, float width, float height) {
         this.icon = icon;
         this.iconWidth = width;
@@ -198,9 +176,7 @@ public class Button extends BaseUIComponent {
         this.iconPadding = padding;
     }
 
-    /**
-     * Установка цвета текста
-     */
+    
     public void setTextColor(Color color) {
         this.textColor = color;
     }
@@ -209,9 +185,7 @@ public class Button extends BaseUIComponent {
         this.textColor = new Color(r, g, b, a);
     }
 
-    /**
-     * Установка цвета нажатой кнопки
-     */
+    
     public void setPressedColor(Color color) {
         this.pressedColor = color;
     }
@@ -220,9 +194,7 @@ public class Button extends BaseUIComponent {
         this.pressedColor = new Color(r, g, b, a);
     }
 
-    /**
-     * Установка шрифта
-     */
+    
     public void setFont(BitmapFont font) {
         this.font = font;
         updateTextLayout();
@@ -241,9 +213,7 @@ public class Button extends BaseUIComponent {
 
     @Override
     public void dispose() {
-        // Шрифты управляются FontManager'ом, но если есть иконка, можно освободить её
         if (icon != null) {
-            // icon.dispose(); // Осторожно: иконка может использоваться в других местах
         }
     }
 }

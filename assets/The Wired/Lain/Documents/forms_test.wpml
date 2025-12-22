@@ -1,0 +1,66 @@
+@title Test Forms
+@bg #001122
+@text #00FF40
+@link #00FFFF
+
+[wpml]
+
+[center]
+[h1 color="#FF00FF"]Тест форм WPML[/h1]
+[/center]
+
+[hr width="80%" color="#00FF40"]
+
+[h2]Пример формы логина[/h2]
+
+[forms name="loginForm"]
+[p]Имя пользователя:[/p]
+[input name="username" placeholder="Введите имя" width="300" height="30" color="#000000" bgcolor="#FFFFFF"]
+
+[p]Пароль:[/p]
+[input name="password" placeholder="Введите пароль" width="300" height="30" color="#000000" bgcolor="#FFFFFF"]
+
+[br]
+[button type="submit" bgcolor="#00AA00" color="#FFFFFF"]Войти[/button]
+[/forms]
+
+[hr]
+
+[h2]Пример с onclick кнопкой[/h2]
+
+[p]Кнопка с пользовательским обработчиком:[/p]
+[button type="onclick:testFunction" bgcolor="#FF6600" color="#FFFFFF"]Кликни меня![/button]
+
+[hr]
+
+[h2]Форма регистрации[/h2]
+
+[forms name="registerForm"]
+[p]Email:[/p]
+[input name="email" value="" placeholder="example@mail.com" width="350" height="30"]
+
+[p]Возраст:[/p]
+[input name="age" value="" placeholder="18" width="100" height="30"]
+
+[p]О себе:[/p]
+[input name="about" value="" placeholder="Расскажите о себе" width="400" height="30"]
+
+[br]
+[button type="submit"]Зарегистрироваться[/button]
+[button type="onclick:cancel" bgcolor="#AA0000"]Отмена[/button]
+[/forms]
+
+[hr]
+
+[center]
+[p]Инструкция:[/p]
+[ul]
+[li]Кликните на поле ввода чтобы активировать[/li]
+[li]Используйте клавиатуру для ввода[/li]
+[li]Backspace - удалить символ[/li]
+[li]Стрелки ← → - двигать курсор[/li]
+[li]Кликните на кнопку Submit для отправки[/li]
+[/ul]
+[/center]
+
+[/wpml]

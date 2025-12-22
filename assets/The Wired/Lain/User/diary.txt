@@ -1,0 +1,30 @@
+@title("1")
+@bgcolor('000000')
+@color('00FF00')
+
+[h2 color="FF0000"]Hi![/h2]
+[link href="another.wired"]Click![/link]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -8,9 +8,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFont
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Менеджер шрифтов с поддержкой русских символов
- */
+
 public class FontManager {
     private static FontManager instance;
     private Map<String, BitmapFont> fonts;
@@ -33,11 +31,7 @@ public class FontManager {
         return instance;
     }
 
-    /**
-     * Получить шрифт определенного размера
-     * @param size Размер шрифта
-     * @return BitmapFont
-     */
+    
     public BitmapFont getFont(int size) {
         String key = "arial_" + size;
         if (!fonts.containsKey(key)) {
@@ -46,21 +40,15 @@ public class FontManager {
         return fonts.get(key);
     }
 
-    /**
-     * Создать шрифт с параметрами
-     * @param size Размер шрифта
-     * @return BitmapFont
-     */
+    
     private BitmapFont createFont(int size) {
         if (generator == null) {
-            // Fallback на дефолтный шрифт, если не удалось загрузить arial.ttf
             return new BitmapFont();
         }
 
         FreeTypeFontParameter parameter = new FreeTypeFontParameter();
         parameter.size = size;
         parameter.characters = FreeTypeFontGenerator.DEFAULT_CHARS;
-        // Добавляем русские символы
         parameter.characters += "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя";
         parameter.minFilter = com.badlogic.gdx.graphics.Texture.TextureFilter.Linear;
         parameter.magFilter = com.badlogic.gdx.graphics.Texture.TextureFilter.Linear;
@@ -68,12 +56,7 @@ public class FontManager {
         return generator.generateFont(parameter);
     }
 
-    /**
-     * Создать шрифт с кастомными параметрами
-     * @param size Размер шрифта
-     * @param parameter Дополнительные параметры (может быть null)
-     * @return BitmapFont
-     */
+    
     public BitmapFont createCustomFont(int size, FreeTypeFontParameter parameter) {
         if (generator == null) {
             return new BitmapFont();
@@ -91,9 +74,7 @@ public class FontManager {
         return generator.generateFont(parameter);
     }
 
-    /**
-     * Освобождение ресурсов
-     */
+    
     public void dispose() {
         for (BitmapFont font : fonts.values()) {
             font.dispose();

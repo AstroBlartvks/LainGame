@@ -4,9 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 
-/**
- * Контейнер для автоматической компоновки компонентов в виде сетки
- */
+
 public class Grid extends BaseUIComponent {
     private Array<UIComponent> components;
     private int columns;
@@ -25,9 +23,7 @@ public class Grid extends BaseUIComponent {
         calculateCellSize();
     }
 
-    /**
-     * Добавление компонента в следующую доступную ячейку
-     */
+    
     public void addComponent(UIComponent component) {
         if (components.size >= columns * rows) {
             System.err.println("Grid is full! Cannot add more components.");
@@ -37,9 +33,7 @@ public class Grid extends BaseUIComponent {
         layoutComponents();
     }
 
-    /**
-     * Добавление компонента в определенную позицию сетки
-     */
+    
     public void addComponent(UIComponent component, int column, int row) {
         int index = row * columns + column;
 
@@ -48,7 +42,6 @@ public class Grid extends BaseUIComponent {
             return;
         }
 
-        // Расширяем массив если нужно
         while (components.size <= index) {
             components.add(null);
         }
@@ -57,24 +50,18 @@ public class Grid extends BaseUIComponent {
         layoutComponent(component, column, row);
     }
 
-    /**
-     * Удаление компонента
-     */
+    
     public void removeComponent(UIComponent component) {
         components.removeValue(component, true);
         layoutComponents();
     }
 
-    /**
-     * Очистка всех компонентов
-     */
+    
     public void clear() {
         components.clear();
     }
 
-    /**
-     * Получение компонента по позиции
-     */
+    
     public UIComponent getComponent(int column, int row) {
         int index = row * columns + column;
         if (index >= 0 && index < components.size) {
@@ -89,7 +76,6 @@ public class Grid extends BaseUIComponent {
 
         if (!active || !visible) return;
 
-        // Используем индексный цикл чтобы избежать nested iterator
         for (int i = 0; i < components.size; i++) {
             UIComponent component = components.get(i);
             if (component != null) {
@@ -102,7 +88,6 @@ public class Grid extends BaseUIComponent {
     public void render(SpriteBatch batch, ShapeRenderer shapeRenderer) {
         if (!visible) return;
 
-        // Отрисовка фона (опционально)
         if (drawBackground) {
             boolean wasBatchDrawing = batch.isDrawing();
             if (wasBatchDrawing) {
@@ -114,7 +99,6 @@ public class Grid extends BaseUIComponent {
             }
         }
 
-        // Отрисовка компонентов
         for (int i = 0; i < components.size; i++) {
             UIComponent component = components.get(i);
             if (component != null && component.isVisible()) {
@@ -123,9 +107,7 @@ public class Grid extends BaseUIComponent {
         }
     }
 
-    /**
-     * Расположение всех компонентов по сетке
-     */
+    
     private void layoutComponents() {
         int index = 0;
         for (int row = 0; row < rows; row++) {
@@ -152,9 +134,7 @@ public class Grid extends BaseUIComponent {
         }
     }
 
-    /**
-     * Пересчет размера ячеек
-     */
+    
     private void calculateCellSize() {
         cellWidth = (width - spacing * (columns - 1)) / columns;
         cellHeight = (height - spacing * (rows - 1)) / rows;
@@ -167,9 +147,7 @@ public class Grid extends BaseUIComponent {
         layoutComponents();
     }
 
-    /**
-     * Установка количества столбцов и строк
-     */
+    
     public void setGridSize(int columns, int rows) {
         this.columns = columns;
         this.rows = rows;
@@ -185,9 +163,7 @@ public class Grid extends BaseUIComponent {
         return rows;
     }
 
-    /**
-     * Установка отступов между ячейками
-     */
+    
     public void setSpacing(float spacing) {
         this.spacing = spacing;
         calculateCellSize();
@@ -198,9 +174,7 @@ public class Grid extends BaseUIComponent {
         return spacing;
     }
 
-    /**
-     * Автоматическое изменение размера компонентов под ячейки
-     */
+    
     public void setAutoResize(boolean autoResize) {
         this.autoResize = autoResize;
         if (autoResize) {
@@ -212,16 +186,12 @@ public class Grid extends BaseUIComponent {
         return autoResize;
     }
 
-    /**
-     * Отрисовка фона сетки
-     */
+    
     public void setDrawBackground(boolean draw) {
         this.drawBackground = draw;
     }
 
-    /**
-     * Получение всех компонентов
-     */
+    
     public Array<UIComponent> getComponents() {
         return components;
     }

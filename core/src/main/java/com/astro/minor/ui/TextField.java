@@ -9,9 +9,7 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-/**
- * Компонент для ввода текста
- */
+
 public class TextField extends BaseUIComponent {
     private StringBuilder text;
     private String placeholder = "";
@@ -61,7 +59,6 @@ public class TextField extends BaseUIComponent {
                         notifyTextChanged();
                     }
                 } else if (character == '\n' || character == '\r') {
-                    // Enter - можно добавить обработку
                     return true;
                 } else if (character >= 32 || character == '\t') { // Печатаемые символы
                     if (maxLength < 0 || text.length() < maxLength) {
@@ -85,7 +82,6 @@ public class TextField extends BaseUIComponent {
             return;
         }
 
-        // Обработка клика для фокуса
         if (Gdx.input.justTouched()) {
             int mouseX = Gdx.input.getX();
             int mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
@@ -97,7 +93,6 @@ public class TextField extends BaseUIComponent {
             }
         }
 
-        // Мигание курсора
         if (focused) {
             cursorBlinkTime += delta;
             if (cursorBlinkTime >= 0.5f) {
@@ -111,7 +106,6 @@ public class TextField extends BaseUIComponent {
     public void render(SpriteBatch batch, ShapeRenderer shapeRenderer) {
         if (!visible) return;
 
-        // Отрисовка фона
         boolean wasBatchDrawing = batch.isDrawing();
         if (wasBatchDrawing) {
             batch.end();
@@ -122,7 +116,6 @@ public class TextField extends BaseUIComponent {
         shapeRenderer.rect(x, y, width, height);
         shapeRenderer.end();
 
-        // Граница (подсвечивается при фокусе)
         if (borderWidth > 0) {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
             shapeRenderer.setColor(focused ? focusedBorderColor : borderColor);
@@ -135,26 +128,21 @@ public class TextField extends BaseUIComponent {
             batch.begin();
         }
 
-        // Отрисовка текста
 
         String displayText = text.toString();
         boolean isEmpty = displayText.isEmpty();
 
         if (isEmpty && !placeholder.isEmpty()) {
-            // Отображение placeholder
             font.setColor(placeholderColor);
             font.draw(batch, placeholder, x + padding, y + height / 2 + font.getLineHeight() / 2);
         } else {
-            // Отображение текста
             font.setColor(textColor);
             layout.setText(font, displayText);
 
             float textX = x + padding;
             float textY = y + height / 2 + layout.height / 2;
 
-            // Обрезка текста, если он выходит за границы
             if (layout.width > width - padding * 2) {
-                // Показываем только конец текста, который помещается
                 int visibleChars = displayText.length();
                 while (visibleChars > 0) {
                     layout.setText(font, displayText.substring(displayText.length() - visibleChars));
@@ -166,7 +154,6 @@ public class TextField extends BaseUIComponent {
 
             font.draw(batch, displayText, textX, textY);
 
-            // Отрисовка курсора
             if (focused && showCursor) {
                 layout.setText(font, displayText);
                 float cursorX = textX + layout.width + 2;
@@ -181,21 +168,16 @@ public class TextField extends BaseUIComponent {
                 batch.begin();
             }
         }
-        // batch остается открытым
     }
 
-    /**
-     * Установка/снятие фокуса
-     */
+    
     public void setFocused(boolean focused) {
         if (this.focused != focused) {
             this.focused = focused;
 
             if (focused) {
-                // Регистрируем input processor
                 Gdx.input.setInputProcessor(inputAdapter);
             } else {
-                // Снимаем input processor
                 if (Gdx.input.getInputProcessor() == inputAdapter) {
                     Gdx.input.setInputProcessor(null);
                 }
@@ -210,9 +192,7 @@ public class TextField extends BaseUIComponent {
         return focused;
     }
 
-    /**
-     * Установка/получение текста
-     */
+    
     public void setText(String text) {
         this.text = new StringBuilder(text);
         notifyTextChanged();
@@ -222,17 +202,13 @@ public class TextField extends BaseUIComponent {
         return text.toString();
     }
 
-    /**
-     * Очистка текста
-     */
+    
     public void clear() {
         text.setLength(0);
         notifyTextChanged();
     }
 
-    /**
-     * Установка placeholder
-     */
+    
     public void setPlaceholder(String placeholder) {
         this.placeholder = placeholder;
     }
@@ -241,16 +217,12 @@ public class TextField extends BaseUIComponent {
         return placeholder;
     }
 
-    /**
-     * Установка максимальной длины
-     */
+    
     public void setMaxLength(int maxLength) {
         this.maxLength = maxLength;
     }
 
-    /**
-     * Установка шрифта
-     */
+    
     public void setFont(BitmapFont font) {
         this.font = font;
     }
@@ -259,9 +231,7 @@ public class TextField extends BaseUIComponent {
         this.font = FontManager.getInstance().getFont(fontSize);
     }
 
-    /**
-     * Установка цветов
-     */
+    
     public void setTextColor(Color color) {
         this.textColor = color;
     }
@@ -274,16 +244,12 @@ public class TextField extends BaseUIComponent {
         this.focusedBorderColor = color;
     }
 
-    /**
-     * Установка padding
-     */
+    
     public void setPadding(float padding) {
         this.padding = padding;
     }
 
-    /**
-     * Установка слушателя изменений
-     */
+    
     public void setChangeListener(TextChangeListener listener) {
         this.changeListener = listener;
     }

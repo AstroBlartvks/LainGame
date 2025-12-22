@@ -7,9 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Align;
 
-/**
- * Компонент для отображения текста
- */
+
 public class Label extends BaseUIComponent {
     private String text;
     private BitmapFont font;
@@ -18,6 +16,7 @@ public class Label extends BaseUIComponent {
     private int alignment = Align.left;
     private boolean wrapText = false;
     private boolean drawBackground = false;
+    private float padding = 0f;
 
     public Label(float x, float y, String text) {
         super(x, y, 0, 0);
@@ -48,7 +47,6 @@ public class Label extends BaseUIComponent {
     public void render(SpriteBatch batch, ShapeRenderer shapeRenderer) {
         if (!visible) return;
 
-        // Отрисовка фона (опционально)
         if (drawBackground) {
             boolean wasBatchDrawing = batch.isDrawing();
             if (wasBatchDrawing) {
@@ -60,17 +58,14 @@ public class Label extends BaseUIComponent {
             }
         }
 
-        // Отрисовка текста (batch уже открыт)
         font.setColor(textColor);
 
         float textX = x;
         float textY = y;
 
         if (wrapText && width > 0) {
-            // Текст с переносом
-            font.draw(batch, text, x, y + height, width, alignment, true);
+            font.draw(batch, text, x + padding, y + height - padding, width, alignment, true);
         } else {
-            // Обычный текст с выравниванием
             switch (alignment) {
                 case Align.center:
                     textX = x + (width > 0 ? width : layout.width) / 2 - layout.width / 2;
@@ -83,14 +78,11 @@ public class Label extends BaseUIComponent {
                     break;
             }
             textY = y + layout.height;
-            font.draw(batch, text, textX, textY);
+            font.draw(batch, text, textX + padding, textY - padding);
         }
-        // batch остается открытым
     }
 
-    /**
-     * Установка текста
-     */
+    
     public void setText(String text) {
         this.text = text;
         updateTextLayout();
@@ -100,9 +92,7 @@ public class Label extends BaseUIComponent {
         return text;
     }
 
-    /**
-     * Установка шрифта
-     */
+    
     public void setFont(BitmapFont font) {
         this.font = font;
         updateTextLayout();
@@ -113,9 +103,7 @@ public class Label extends BaseUIComponent {
         updateTextLayout();
     }
 
-    /**
-     * Установка цвета текста
-     */
+    
     public void setTextColor(Color color) {
         this.textColor = color;
     }
@@ -124,25 +112,18 @@ public class Label extends BaseUIComponent {
         this.textColor = new Color(r, g, b, a);
     }
 
-    /**
-     * Установка выравнивания текста
-     * @param alignment Align.left, Align.center, Align.right
-     */
+    
     public void setAlignment(int alignment) {
         this.alignment = alignment;
     }
 
-    /**
-     * Включить/выключить перенос текста
-     */
+    
     public void setWrapText(boolean wrap) {
         this.wrapText = wrap;
         updateTextLayout();
     }
 
-    /**
-     * Включить/выключить отрисовку фона
-     */
+    
     public void setDrawBackground(boolean draw) {
         this.drawBackground = draw;
     }
@@ -151,11 +132,9 @@ public class Label extends BaseUIComponent {
         if (text != null && !text.isEmpty()) {
             if (wrapText && width > 0) {
                 layout.setText(font, text, textColor, width, Align.left, true);
-                // Обновляем высоту на основе переноса текста
                 this.height = layout.height;
             } else {
                 layout.setText(font, text);
-                // Авто-размер для простого текста
                 if (width == 0) {
                     this.width = layout.width;
                 }
@@ -168,6 +147,13 @@ public class Label extends BaseUIComponent {
 
     @Override
     public void dispose() {
-        // Шрифты управляются FontManager'ом
+    }
+
+    public float getPadding() {
+        return padding;
+    }
+
+    public void setPadding(float padding) {
+        this.padding = padding;
     }
 }

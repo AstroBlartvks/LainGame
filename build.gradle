@@ -23,6 +23,12 @@ allprojects {
       testOutputDir file('build/classes/java/test')
     }
   }
+
+  repositories {
+    mavenCentral()
+    mavenLocal()
+    maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+  }
 }
 
 configure(subprojects) {
@@ -74,5 +80,14 @@ eclipse.project.name = 'LainProject' + '-parent'
 project(":core") {
   dependencies {
     implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+    implementation "com.googlecode.soundlibs:mp3spi:1.9.5.4"
+    implementation "com.googlecode.soundlibs:tritonus-share:0.3.7.4"
+    implementation 'org:jaudiotagger:2.0.3'
+    implementation "com.mpatric:mp3agic:0.9.1"
+
+    // JavaCV для FFmpeg поддержки (только Windows x86_64)
+    implementation "org.bytedeco:javacv:1.5.10"
+    implementation "org.bytedeco:ffmpeg:6.1.1-1.5.10"
+    implementation "org.bytedeco:ffmpeg:6.1.1-1.5.10:windows-x86_64"
   }
 }

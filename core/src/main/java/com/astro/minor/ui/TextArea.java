@@ -10,9 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 
-/**
- * Компонент для многострочного ввода текста
- */
+
 public class TextArea extends BaseUIComponent {
     private Array<StringBuilder> lines;
     private BitmapFont font;
@@ -51,12 +49,10 @@ public class TextArea extends BaseUIComponent {
                     if (currentLineText.length() > 0) {
                         currentLineText.deleteCharAt(currentLineText.length() - 1);
                     } else if (currentLine > 0) {
-                        // Объединить с предыдущей строкой
                         lines.removeIndex(currentLine);
                         currentLine--;
                     }
                 } else if (character == '\n' || character == '\r') {
-                    // Новая строка
                     currentLine++;
                     lines.insert(currentLine, new StringBuilder());
                     adjustScroll();
@@ -91,7 +87,6 @@ public class TextArea extends BaseUIComponent {
             return;
         }
 
-        // Обработка клика для фокуса
         if (Gdx.input.justTouched()) {
             int mouseX = Gdx.input.getX();
             int mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
@@ -103,7 +98,6 @@ public class TextArea extends BaseUIComponent {
             }
         }
 
-        // Мигание курсора
         if (focused) {
             cursorBlinkTime += delta;
             if (cursorBlinkTime >= 0.5f) {
@@ -117,7 +111,6 @@ public class TextArea extends BaseUIComponent {
     public void render(SpriteBatch batch, ShapeRenderer shapeRenderer) {
         if (!visible) return;
 
-        // Отрисовка фона
         boolean wasBatchDrawing = batch.isDrawing();
         if (wasBatchDrawing) {
             batch.end();
@@ -128,7 +121,6 @@ public class TextArea extends BaseUIComponent {
         shapeRenderer.rect(x, y, width, height);
         shapeRenderer.end();
 
-        // Граница
         if (borderWidth > 0) {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
             shapeRenderer.setColor(focused ? focusedBorderColor : borderColor);
@@ -141,13 +133,11 @@ public class TextArea extends BaseUIComponent {
             batch.begin();
         }
 
-        // Отрисовка текста
         font.setColor(textColor);
 
         float lineHeight = font.getLineHeight();
         float textY = y + height - padding - lineHeight;
 
-        // Отображаем только видимые строки
         int startLine = scrollOffset;
         int endLine = Math.min(lines.size, scrollOffset + maxVisibleLines);
 
@@ -155,7 +145,6 @@ public class TextArea extends BaseUIComponent {
             String lineText = lines.get(i).toString();
             font.draw(batch, lineText, x + padding, textY);
 
-            // Курсор на текущей строке
             if (focused && showCursor && i == currentLine) {
                 layout.setText(font, lineText);
                 float cursorX = x + padding + layout.width + 2;
@@ -170,12 +159,9 @@ public class TextArea extends BaseUIComponent {
 
             textY -= lineHeight;
         }
-        // batch остается открытым
     }
 
-    /**
-     * Установка/снятие фокуса
-     */
+    
     public void setFocused(boolean focused) {
         if (this.focused != focused) {
             this.focused = focused;
@@ -197,9 +183,7 @@ public class TextArea extends BaseUIComponent {
         return focused;
     }
 
-    /**
-     * Установка текста (поддерживает многострочный текст)
-     */
+    
     public void setText(String text) {
         lines.clear();
         String[] textLines = text.split("\n");
@@ -213,18 +197,14 @@ public class TextArea extends BaseUIComponent {
         adjustScroll();
     }
 
-    /**
-     * Добавление строки текста
-     */
+    
     public void appendLine(String line) {
         lines.add(new StringBuilder(line));
         currentLine = lines.size - 1;
         adjustScroll();
     }
 
-    /**
-     * Добавление текста к последней строке
-     */
+    
     public void appendText(String text) {
         if (lines.size == 0) {
             lines.add(new StringBuilder());
@@ -232,9 +212,7 @@ public class TextArea extends BaseUIComponent {
         lines.get(lines.size - 1).append(text);
     }
 
-    /**
-     * Получение всего текста
-     */
+    
     public String getText() {
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < lines.size; i++) {
@@ -246,9 +224,7 @@ public class TextArea extends BaseUIComponent {
         return result.toString();
     }
 
-    /**
-     * Очистка текста
-     */
+    
     public void clear() {
         lines.clear();
         lines.add(new StringBuilder());
@@ -256,9 +232,7 @@ public class TextArea extends BaseUIComponent {
         scrollOffset = 0;
     }
 
-    /**
-     * Установка возможности редактирования
-     */
+    
     public void setEditable(boolean editable) {
         this.editable = editable;
     }
@@ -267,9 +241,7 @@ public class TextArea extends BaseUIComponent {
         return editable;
     }
 
-    /**
-     * Установка шрифта
-     */
+    
     public void setFont(BitmapFont font) {
         this.font = font;
         calculateMaxVisibleLines();
@@ -280,9 +252,7 @@ public class TextArea extends BaseUIComponent {
         calculateMaxVisibleLines();
     }
 
-    /**
-     * Установка цвета текста
-     */
+    
     public void setTextColor(Color color) {
         this.textColor = color;
     }
@@ -291,17 +261,13 @@ public class TextArea extends BaseUIComponent {
         this.focusedBorderColor = color;
     }
 
-    /**
-     * Установка padding
-     */
+    
     public void setPadding(float padding) {
         this.padding = padding;
         calculateMaxVisibleLines();
     }
 
-    /**
-     * Прокрутка к последней строке
-     */
+    
     public void scrollToBottom() {
         scrollOffset = Math.max(0, lines.size - maxVisibleLines);
     }
@@ -312,7 +278,6 @@ public class TextArea extends BaseUIComponent {
     }
 
     private void adjustScroll() {
-        // Автоматическая прокрутка к текущей строке
         if (currentLine >= scrollOffset + maxVisibleLines) {
             scrollOffset = currentLine - maxVisibleLines + 1;
         } else if (currentLine < scrollOffset) {
