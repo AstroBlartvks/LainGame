@@ -1,5 +1,7 @@
 # Структура проекта 
 
+https://drive.google.com/drive/folders/1zC0i312u6JIiXp6MNOxC4sDi2DrNQyd6?usp=sharing
+
 ## Общая структура
 
 ```
