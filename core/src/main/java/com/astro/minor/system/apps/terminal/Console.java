@@ -84,6 +84,18 @@ public class Console extends Application implements WatcherSystem.WatcherEventLi
         commands.put("edit", new Edit(fileSystemContext));
         commands.put("memex", new Memex(fileSystemContext));
 
+        ConnectToLain connectToLainCmd = new ConnectToLain();
+        connectToLainCmd.setConsole(this);
+        commands.put("connect_to_lain", connectToLainCmd);
+
+        DisconnectFromLain disconnectFromLainCmd = new DisconnectFromLain();
+        disconnectFromLainCmd.setConsole(this);
+        commands.put("disconnect_from_lain", disconnectFromLainCmd);
+
+        AskLain askLainCmd = new AskLain();
+        askLainCmd.setConsole(this);
+        commands.put("ask_lain", askLainCmd);
+
         createFontFromTTF();
         shapeRenderer = new ShapeRenderer();
         lines = new ArrayList<>();

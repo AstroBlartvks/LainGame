@@ -7,6 +7,7 @@ import com.astro.minor.audio.WatcherSystem;
 import com.astro.minor.core.ServiceLocator;
 import com.astro.minor.core.config.AppConfig;
 import com.astro.minor.filesystem.core.FileSystemManager;
+import com.astro.minor.lainAI.KoboldCppManager;
 import com.astro.minor.signal.CognitiveStabilitySystem;
 import com.astro.minor.signal.ProcessWatcher;
 import com.astro.minor.signal.SignalGenerator;
@@ -149,6 +150,13 @@ public class StarField extends ApplicationAdapter {
     }
 
     public void handleInput() {
+        if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.ALT_RIGHT)) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.F4)) {
+                Gdx.app.log("StarField", "Alt+F4 blocked - use window close button");
+                return;
+            }
+        }
+        
         if (Gdx.input.isKeyJustPressed(Input.Keys.F11)) {
             if (Gdx.graphics.isFullscreen()) {
                 Gdx.graphics.setWindowedMode(AppConfig.DEFAULT_WINDOW_WIDTH, AppConfig.DEFAULT_WINDOW_HEIGHT);
@@ -176,22 +184,91 @@ public class StarField extends ApplicationAdapter {
 
     @Override
     public void dispose() {
-        batch.dispose();
-        if (desktopSystemOS != null) {
-            desktopSystemOS.dispose();
+        safeShutdown();
+    }
+    
+    public void safeShutdown() {
+        Gdx.app.log("StarField", "=== Safe Shutdown Initiated ===");
+        
+        Gdx.app.log("LainAI", "Forcing KoboldCpp shutdown...");
+        try {
+            KoboldCppManager manager = KoboldCppManager.getInstance();
+            if (manager.isRunning()) {
+                manager.stopKoboldCpp();
+                Thread.sleep(2000);
+            }
+            Gdx.app.log("LainAI", "KoboldCpp shutdown complete");
+        } catch (Exception e) {
+            Gdx.app.error("LainAI", "Error stopping KoboldCpp", e);
         }
-        if (computerAmbience != null) {
-            computerAmbience.dispose();
+        
+        try {
+            if (batch != null) {
+                batch.dispose();
+                Gdx.app.log("StarField", "Batch disposed");
+            }
+        } catch (Exception e) {
+            Gdx.app.error("StarField", "Error disposing batch", e);
         }
-        if (videoPlayer != null) {
-            videoPlayer.dispose();
+        
+        try {
+            if (desktopSystemOS != null) {
+                desktopSystemOS.dispose();
+                Gdx.app.log("StarField", "DesktopOS disposed");
+            }
+        } catch (Exception e) {
+            Gdx.app.error("StarField", "Error disposing desktopSystemOS", e);
         }
-        if (appExecutor != null) {
-            appExecutor.dispose();
+        
+        try {
+            if (computerAmbience != null) {
+                computerAmbience.dispose();
+                Gdx.app.log("StarField", "ComputerAmbience disposed");
+            }
+        } catch (Exception e) {
+            Gdx.app.error("StarField", "Error disposing computerAmbience", e);
         }
-        if (crtShader != null) {
-            crtShader.dispose();
+        
+        try {
+            if (videoPlayer != null) {
+                videoPlayer.dispose();
+                Gdx.app.log("StarField", "VideoPlayer disposed");
+            }
+        } catch (Exception e) {
+            Gdx.app.error("StarField", "Error disposing videoPlayer", e);
         }
-        WatcherSystem.getInstance().dispose();
+        
+        try {
+            if (appExecutor != null) {
+                appExecutor.dispose();
+                Gdx.app.log("StarField", "AppExecutor disposed");
+            }
+        } catch (Exception e) {
+            Gdx.app.error("StarField", "Error disposing appExecutor", e);
+        }
+        
+        try {
+            if (crtShader != null) {
+                crtShader.dispose();
+                Gdx.app.log("StarField", "CRT Shader disposed");
+            }
+        } catch (Exception e) {
+            Gdx.app.error("StarField", "Error disposing crtShader", e);
+        }
+        
+        try {
+            WatcherSystem.getInstance().dispose();
+            Gdx.app.log("StarField", "WatcherSystem disposed");
+        } catch (Exception e) {
+            Gdx.app.error("StarField", "Error disposing WatcherSystem", e);
+        }
+        
+        Gdx.app.log("StarField", "=== Safe Shutdown Complete ===");
+        
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 }
