@@ -1,6 +1,6 @@
 # Структура проекта 
 
-https://drive.google.com/drive/folders/1zC0i312u6JIiXp6MNOxC4sDi2DrNQyd6?usp=sharing
+https://drive.google.com/drive/folders/1zC0i312u6JIiXp6MNOxC4sDi2DrNQyd6?usp=sharing (здесь была моделька ИИ (дообученный и квантизированный квен), но я не хотел 5 Гб держать на диске)
 
 ## Общая структура
 
